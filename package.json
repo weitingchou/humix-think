@@ -10,7 +10,7 @@
     },
     "main"         : "red/red.js",
     "scripts"      : {
-        "start": "node red.js",
+        "start": "node red.js -v",
         "test": "./node_modules/.bin/grunt"
     },
     "bin"          : {
@@ -54,7 +54,12 @@
         "passport":"0.2.1",
         "passport-http-bearer":"1.0.1",
         "passport-oauth2-client-password":"0.1.2",
-        "oauth2orize":"1.0.1"
+        "oauth2orize":"1.0.1",
+        "cfenv": "~1.0.0",
+        "node-uuid": "1.4.3",
+        "iotclient": "0.1.4",
+        "redis": "0.12.1",
+        "mongodb": "2.0.31"
     },
     "optionalDependencies": {
         "irc":"0.3.9",
