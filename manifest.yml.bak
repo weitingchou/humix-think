@@ -1,0 +1,16 @@
+---
+disk_quota: 1024M
+domain: mybluemix.net
+instances: 1
+services:
+    - AlchemyAPI-qk
+applications:
+    - name: Humix-Omega-Think
+      host: humix-omega-think
+      memory: 256M
+    - name: Humix-Alpha-Think
+      host: humix-alpha-think
+      memory: 256M
+    - name: Humix-Delta-Think
+      host: humix-delta-think
+      memory: 256M

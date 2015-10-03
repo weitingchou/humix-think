@@ -84,6 +84,7 @@ module.exports = {
     // following property can be used to identify a directory of static content
     // that should be served at http://localhost:1880/.
     //httpStatic: '/home/nol/node-red-dashboard/',
+    httpStatic: './tmp/',
 
     // To password protect the static content, the following property can be used.
     // The password must be an md5 hash  eg.. 5f4dcc3b5aa765d61d8327deb882cf99 ('password')
@@ -130,6 +131,8 @@ module.exports = {
     //    context.global.os
 
     functionGlobalContext: {
+        fs: require('fs'),
+        uuid: require('node-uuid'),
         // os:require('os'),
         // bonescript:require('bonescript'),
         // jfive:require("johnny-five"),

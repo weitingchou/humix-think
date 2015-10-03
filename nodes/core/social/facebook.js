@@ -10,7 +10,7 @@ module.exports = function(RED) {
             conNodeId = uuid.v4(),
             feedNodeId = uuid.v4(),
             conOptions = {
-                url: 'http://humix-fb.mybluemix.net/api/conversations',
+                url: 'http://humix-ch-fb.mybluemix.net/api/conversations',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     page_id: config.pageId,
@@ -19,7 +19,7 @@ module.exports = function(RED) {
                 })
             };
             feedOptions = {
-                url: 'http://humix-fb.mybluemix.net/api/feeds',
+                url: 'http://humix-ch-fb.mybluemix.net/api/feeds',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
                     page_id: config.pageId,
@@ -39,6 +39,7 @@ module.exports = function(RED) {
                     conversationId: req.body.t_id || undefined,
                     type: req.body.type || undefined,
                     pageName: req.body.page_name || undefined,
+                    pageId: config.pageId,
                     accessToken: config.accessToken
                 },
                 payload: req.body.message || ''
@@ -71,25 +72,42 @@ module.exports = function(RED) {
         var node = this;
 
         node.on('input', function(msg) {
-            if (!msg.payload || !msg.facebook || !msg.facebook.messageId) {
+            //if (!msg.payload || !msg.facebook) {
+            if (!msg.payload) {
                 node.error('Missing property!');
                 return;
             }
 
-            var options = {
-                url: 'http://humix-fb.mybluemix.net/api/message',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
+            var body = {};
+            if (msg.payload.link) {
+                console.log('link: '+msg.payload.link);
+                body = {
+                    access_token: 'CAAWy4kLZBfyMBAMw8gaOqFHZAdrKd64jUHGblLZBCtUVePaLZBotKy2fZBqudj2WDHXSdqe5vfBc2DIS9uSZACtht1EmLfraHfRmUVy1burdZBmVOQJf2O12pp4ZAR7U7xbzWFlbT6fWAbDsyH6MaD7r3pGRsDBPn6cgbTzVlaGfoO7MnCTzgLZAX',
+                    type: 'message',
+                    page_id: '816647205082726',
+                    message: msg.payload.text || 'Here is your picture',
+                    link: msg.payload.link
+                };
+            } else {
+                body = {
                     t_id: msg.facebook.conversationId,
                     access_token: msg.facebook.accessToken,
                     type: msg.facebook.type,
                     page_name: msg.facebook.pageName,
-                    message: msg.payload.text || ''
-                })
+                    page_id: msg.facebook.pageId,
+                    message: msg.payload.text || '',
+                    link: undefined
+                };
+            }
+            var options = {
+                url: 'http://humix-ch-fb.mybluemix.net/api/message',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(body)
             };
             console.log('options: '+JSON.stringify(options));
             request.post(options, function(err) {
                 if (err) { node.error('Failed to send message, err: '+err); }
+                else { node.send(msg); }
             });
         });
     }

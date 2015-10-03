@@ -309,6 +309,7 @@ Flow.prototype.parseConfig = function(config) {
             var m = subflowInstanceRE.exec(nodeType);
             if ((m && !this.subflows[m[1]]) || (!m && !typeRegistry.get(nodeType))) {
                 // This is an unknown subflow or an unknown type
+                console.log('Missing node type: '+nodeType);
                 unknownTypes[nodeType] = true;
             } else {
                 var nodeInfo = {
